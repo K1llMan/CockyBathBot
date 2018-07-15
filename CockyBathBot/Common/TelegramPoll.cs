@@ -8,6 +8,20 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TelegramBot
 {
+    public static class IEnumerableExtensions
+    {
+        /// <summary>
+        /// Разбивает коллекцию на части
+        /// </summary>
+        public static IEnumerable<IEnumerable<T>> Split<T>(this IEnumerable<T> array, int size)
+        {
+            for (var i = 0; i < (float)array.Count() / size; i++)
+            {
+                yield return array.Skip(i * size).Take(size);
+            }
+        }
+    }
+
     public class TelegramPoll
     {
         #region Поля
@@ -44,6 +58,11 @@ namespace TelegramBot
 
         #endregion События
 
+        #region Вспогательные функции
+
+
+        #endregion Вспогательные функции
+
         #region Основные функции
 
         public void Send(User creator, string question, string[] answers)
@@ -52,7 +71,7 @@ namespace TelegramBot
             Question = question;
 
             int i = 0;
-            var inlineKeyboard = new InlineKeyboardMarkup(answers.Select(a => InlineKeyboardButton.WithCallbackData(a.Trim())));
+            var inlineKeyboard = new InlineKeyboardMarkup(answers.Select(a => InlineKeyboardButton.WithCallbackData(a.Trim())).Split(2));
 
             Message msg = bot.SendTextMessageAsync(
                 ChatId,
