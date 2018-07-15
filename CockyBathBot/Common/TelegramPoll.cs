@@ -58,11 +58,6 @@ namespace TelegramBot
 
         #endregion События
 
-        #region Вспогательные функции
-
-
-        #endregion Вспогательные функции
-
         #region Основные функции
 
         public void Send(User creator, string question, string[] answers)
