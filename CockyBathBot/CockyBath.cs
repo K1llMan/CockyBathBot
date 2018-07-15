@@ -215,23 +215,30 @@ namespace CockyBathBot
         [Description("Заказать свежее мясо.")]
         public async void GetFreshMeat(object sender, Message message)
         {
-            if (girls.Count == 0)
+            try
             {
-                await bot.SendTextMessageAsync(
-                    message.Chat.Id,
-                    lexer.GetPhrase("noGirls", cockyLevel, message.From));
+                if (girls.Count == 0)
+                {
+                    await bot.SendTextMessageAsync(
+                        message.Chat.Id,
+                        lexer.GetPhrase("noGirls", cockyLevel, message.From));
 
-                SendSticker(message, "sad_fag");
-                return;
+                    SendSticker(message, "sad_fag");
+                    return;
+                }
+
+                FileInfo file = girls[new Random().Next(girls.Count)];
+                using (var fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read))
+                {
+                    await bot.SendPhotoAsync(
+                        message.Chat.Id,
+                        fileStream,
+                        string.Format(lexer.GetPhrase("boobsDelivery", cockyLevel, message.From), "@" + message.From.Username));
+                }
             }
-
-            FileInfo file = girls[new Random().Next(girls.Count)];
-            using (var fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read))
+            catch (Exception ex)
             {
-                await bot.SendPhotoAsync(
-                    message.Chat.Id,
-                    fileStream,
-                    string.Format(lexer.GetPhrase("boobsDelivery", cockyLevel, message.From), "@" + message.From.Username));
+                Console.WriteLine(ex);
             }
         }
 

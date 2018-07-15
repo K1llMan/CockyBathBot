@@ -57,21 +57,32 @@ namespace TelegramBot
         {
             var message = messageEventArgs.Message;
 
-            if (message == null || message.Type != MessageType.Text)
+            if (message == null)
                 return;
 
-            string command = message.Text.Split(' ').First().Replace("@" + user.Username, string.Empty).ToLower();
-            if (commandList.ContainsKey(command))
+            switch (message.Type)
             {
-                message.Text = message.Text.Replace(command, string.Empty).Trim();
-                commandList[command](sender, message);
+                case MessageType.Sticker:
+                    bot.SendStickerAsync(
+                        message.Chat.Id,
+                        new InputOnlineFile(message.Sticker.FileId));
+                    break;
+
+                default:
+                    string command = message.Text.Split(' ').First().Replace("@" + user.Username, string.Empty).ToLower();
+                    if (commandList.ContainsKey(command))
+                    {
+                        message.Text = message.Text.Replace(command, string.Empty).Trim();
+                        commandList[command](sender, message);
+                    }
+                    else
+                        // Отвечаем только на цитаты своих сообщений
+                    if (message.Text.StartsWith("/") ||
+                        message.Text.Contains(user.Username) ||
+                        message.ReplyToMessage != null && message.ReplyToMessage.From == user)
+                        UnknownCommand(sender, message);
+                    break;
             }
-            else
-                // Отвечаем только на цитаты своих сообщений
-                if(message.Text.StartsWith("/") || 
-                    message.Text.Contains(user.Username) || 
-                    message.ReplyToMessage != null && message.ReplyToMessage.From == user)
-                    UnknownCommand(sender, message);
         }
 
         private async void BotOnCallbackQueryReceived(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
