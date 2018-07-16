@@ -40,7 +40,8 @@ namespace TelegramBot
             try
             {
                 settings = LoadSettings("botsettings.json");
-                CockyBath bot = new CockyBath(settings["key"].ToString(), settings["proxy"].ToString(), Convert.ToInt32(settings["port"].ToString()));
+                CockyBath bot = new CockyBath(settings["key"].ToString(), Convert.ToInt32(settings["cockyLevel"].ToString()), 
+                    settings["proxy"].ToString(), Convert.ToInt32(settings["port"].ToString()));
 
                 Console.Title = bot.Name;
 

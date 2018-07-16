@@ -28,7 +28,7 @@ namespace CockyBathBot
 
         private int cockyLevel = 40;
 
-        private List<FileInfo> girls;
+        private Dictionary<FileInfo, int> girls;
         private FileSystemWatcher girlsWatcher;
 
         #endregion Поля
@@ -39,9 +39,9 @@ namespace CockyBathBot
         {
             string fileName = Path.GetFileName(e.FullPath);
             if (e.ChangeType == WatcherChangeTypes.Created)
-                girls.Add(new FileInfo(e.FullPath));
+                girls.Add(new FileInfo(e.FullPath), 0);
             if (e.ChangeType == WatcherChangeTypes.Deleted)
-                girls.Remove(girls.FirstOrDefault(f => f.Name == fileName));
+                girls.Remove(girls.FirstOrDefault(f => f.Key.Name == fileName).Key);
         }
 
         private void InitWatchers()
@@ -227,7 +227,15 @@ namespace CockyBathBot
                     return;
                 }
 
-                FileInfo file = girls[new Random().Next(girls.Count)];
+                int min = girls.Min(p => p.Value);
+                List<FileInfo> leastGirls = girls
+                    .Where(p => p.Value == min)
+                    .Select(p => p.Key)
+                    .ToList();
+
+                FileInfo file = leastGirls[new Random().Next(leastGirls.Count)];
+                girls[file]++;
+
                 using (var fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read))
                 {
                     await bot.SendPhotoAsync(
@@ -293,9 +301,10 @@ namespace CockyBathBot
             };
         }
 
-        public CockyBath(string apiKey, string proxyUrl = "", int proxyPort = 0) : base(apiKey, proxyUrl, proxyPort)
+        public CockyBath(string apiKey, int cockyLevel, string proxyUrl = "", int proxyPort = 0) : base(apiKey, proxyUrl, proxyPort)
         {
-            girls = new DirectoryInfo("girls").GetFiles("*", SearchOption.AllDirectories).ToList();
+            this.cockyLevel = cockyLevel;
+            girls = new DirectoryInfo("girls").GetFiles("*", SearchOption.AllDirectories).ToDictionary(f => f, f => 0);
             lexer = new CockyLexer();
             lexer.UpdatePhrases("phrases.json");
 
