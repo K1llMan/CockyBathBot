@@ -179,7 +179,7 @@ namespace CockyBathBot
         {
             bot.SendTextMessageAsync(
                 message.Chat.Id,
-                string.Format(lexer.GetPhrase("hello", cockyLevel, message.From), "@" + message.From.Username));
+                string.Format(lexer.GetPhrase("hello", cockyLevel, message.From), GetUserName(message.From)));
 
             SendSticker(message, "hohot");
         }
@@ -241,7 +241,7 @@ namespace CockyBathBot
                     await bot.SendPhotoAsync(
                         message.Chat.Id,
                         fileStream,
-                        string.Format(lexer.GetPhrase("boobsDelivery", cockyLevel, message.From), "@" + message.From.Username));
+                        string.Format(lexer.GetPhrase("boobsDelivery", cockyLevel, message.From), GetUserName(message.From)));
                 }
             }
             catch (Exception ex)

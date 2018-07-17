@@ -57,7 +57,7 @@ namespace CockyBathBot
 
                 var group = phrases[type];
                 string[] strings = group
-                    .Where(p => p.Key == "common" || user != null && p.Key == user.Username)
+                    .Where(p => p.Key == "common" || user != null && (p.Key == user.Username || p.Key == Convert.ToString(user.Id)))
                     .SelectMany(p => {
                         KeyValuePair<int, string[]> strs = p.Value.FirstOrDefault(c => c.Key <= cockyLevel);
                         return strs.Value ?? new string[] { };

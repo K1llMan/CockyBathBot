@@ -53,6 +53,13 @@ namespace TelegramBot
 
         #region Вспомогательные функции
 
+        protected string GetUserName(User user)
+        {
+            return string.IsNullOrEmpty(user.Username)
+                ? user.FirstName
+                : "@" + user.Username;
+        }
+
         private async void BotOnMessageReceived(object sender, MessageEventArgs messageEventArgs)
         {
             var message = messageEventArgs.Message;
