@@ -56,7 +56,7 @@ namespace TelegramBot
         protected string GetUserName(User user)
         {
             return string.IsNullOrEmpty(user.Username)
-                ? user.FirstName
+                ? $"[{user.FirstName}](tg://user?id={user.Id})" 
                 : "@" + user.Username;
         }
 

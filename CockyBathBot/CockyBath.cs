@@ -179,7 +179,8 @@ namespace CockyBathBot
         {
             bot.SendTextMessageAsync(
                 message.Chat.Id,
-                string.Format(lexer.GetPhrase("hello", cockyLevel, message.From), GetUserName(message.From)));
+                string.Format(lexer.GetPhrase("hello", cockyLevel, message.From), GetUserName(message.From)), 
+                ParseMode.Markdown);
 
             SendSticker(message, "hohot");
         }
@@ -192,7 +193,8 @@ namespace CockyBathBot
             {
                 bot.SendTextMessageAsync(
                     message.Chat.Id,
-                    lexer.GetPhrase("unknownTime", cockyLevel, message.From));
+                    lexer.GetPhrase("unknownTime", cockyLevel, message.From),
+                    ParseMode.Markdown);
                 return;
             }
 
@@ -241,7 +243,8 @@ namespace CockyBathBot
                     await bot.SendPhotoAsync(
                         message.Chat.Id,
                         fileStream,
-                        string.Format(lexer.GetPhrase("boobsDelivery", cockyLevel, message.From), GetUserName(message.From)));
+                        string.Format(lexer.GetPhrase("boobsDelivery", cockyLevel, message.From), GetUserName(message.From)),
+                        ParseMode.Markdown);
                 }
             }
             catch (Exception ex)
@@ -256,14 +259,16 @@ namespace CockyBathBot
         {
             bot.SendTextMessageAsync(
                 message.Chat.Id,
-                string.Format(lexer.GetPhrase("cockyLevel", cockyLevel, message.From), cockyLevel));
+                string.Format(lexer.GetPhrase("cockyLevel", cockyLevel, message.From), cockyLevel),
+                ParseMode.Markdown);
         }
 
         public override void Start(object sender, Message message)
         {
             bot.SendTextMessageAsync(
                 message.Chat.Id,
-                lexer.GetPhrase("start", cockyLevel, message.From));
+                lexer.GetPhrase("start", cockyLevel, message.From),
+                ParseMode.Markdown);
 
             SendSticker(message, "absolutly");
         }
@@ -272,7 +277,8 @@ namespace CockyBathBot
         {
             bot.SendTextMessageAsync(
                 message.Chat.Id,
-                lexer.GetPhrase("testing", cockyLevel, message.From));
+                lexer.GetPhrase("testing", cockyLevel, message.From),
+                ParseMode.Markdown);
         }
 
         public override void UnknownCommand(object sender, Message message)
@@ -280,7 +286,8 @@ namespace CockyBathBot
             cockyLevel = Math.Min(cockyLevel + 5, 100);
             bot.SendTextMessageAsync(
                 message.Chat.Id,
-                lexer.GetPhrase("unknown", cockyLevel, message.From));
+                lexer.GetPhrase("unknown", cockyLevel, message.From),
+                ParseMode.Markdown);
         }
 
         #endregion Команды
