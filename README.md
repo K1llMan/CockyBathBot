@@ -20,6 +20,20 @@
   }
 ```
 
+Настройки подключения хранятся в botsettings.json:
+```
+{
+  // Ключ Telegram Bot API
+  "key": "659678780:AAESk5vXWl3nRV3na33Xlu03ewBzuMDp-tU",
+  // Адрес SOCKS5-прокси, если адрес не указан, то работает без прокси
+  "proxy": "106.14.216.150",
+  // Порт
+  "port": 1080,
+  // Начальный уровень дерзости
+  "cockyLevel": 75
+}
+```
+
 Функционал:
 * Обработка вызовов к боту по атрибуту TelegramCommand.
 * Автоматическая генерация помощи по атрибуту TelegramCommand и Description.
@@ -32,10 +46,3 @@
 * /howmuch - отображает время до следующей баньки.
 * /boobs - показывает прекрасных дам, которых необходимо предусмотрительно расположить в директории girls в корне директории бота.
 * /cockylevel - отражает уровень дерзости баньки.
-
-# CockyBathBot
-.Net Core bot experiment.
-
-Features:
-* Autohelp generating by TelegramCommand attribute.
-* Poll command in all
